@@ -1,0 +1,4 @@
+.DS_Store
+sprocket_api/.env
+sprocket_mcp/.env
+storage

@@ -1,0 +1,49 @@
+services:
+  mcp-server:
+    build:
+      context: ./sprocket_mcp
+      dockerfile: Dockerfile
+    container_name: sprocket-mcp-server
+    restart: unless-stopped
+
+    env_file:
+      - ./sprocket_mcp/.env
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./sprocket_mcp/src:/app/src:ro
+      - ./storage:/app/storage
+
+    command: python -m sprocket_mcp.server
+
+    networks:
+      - sprocket-network
+  
+  api:
+    build:
+      context: ./sprocket_api
+      dockerfile: Dockerfile
+    container_name: sprocket-api
+    restart: unless-stopped
+
+    env_file:
+      - ./sprocket_api/.env
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./sprocket_api/src:/app/src:ro
+      - ./storage:/app/storage
+
+    command: python -m sprocket_api.server
+
+    networks:
+      - sprocket-network
+  
+
+networks:
+  sprocket-network:
+    driver: bridge
