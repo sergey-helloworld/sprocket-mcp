@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from typing import Final
+from typing import Final, Any
 from urllib.parse import urlsplit
 
 class ExcelIo:
@@ -14,7 +14,7 @@ class ExcelIo:
         self, 
         path_or_url: str, 
         sheet_name: str | None = None
-    ) -> list[dict[str, any]]:
+    ) -> list[dict[str, Any]]:
         return pd.read_excel(
             self.__normalize_path(path_or_url), 
             sheet_name
