@@ -9,5 +9,6 @@ dependencies = [
     "requests",
     "pandas",
     "openpyxl",
-    "python-telegram-bot"
+    "python-telegram-bot",
+    "redis"
 ]

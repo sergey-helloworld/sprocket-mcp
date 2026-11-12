@@ -42,6 +42,14 @@ services:
 
     networks:
       - sprocket-network
+
+  redis:
+    image: redis:alpine
+    container_name: sprocket-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sprocket-network
   
 
 networks:

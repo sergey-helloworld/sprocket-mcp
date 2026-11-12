@@ -6,4 +6,7 @@ mcp = FastMCP("Sprocket MCP")
 if __name__ == "__main__":
     Configurator(mcp).configure()
 
-    mcp.run(transport="http", host="0.0.0.0", port=8000)
+    try:
+        mcp.run(transport="http", host="0.0.0.0", port=8000)
+    finally:
+        RedisHelper.close_connection()
