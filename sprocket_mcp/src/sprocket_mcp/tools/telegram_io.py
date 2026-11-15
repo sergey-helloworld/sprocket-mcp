@@ -22,7 +22,7 @@ class TelegramIo:
         async with bot:
             updates = await bot.get_updates(offset=offset, timeout=timeout)
 
-            if chat_id is None:
+            if chat_id is not None:
                 updates = tuple(u for u in updates if u.message.chat_id == chat_id)
 
             return [u.to_dict() for u in updates]
