@@ -14,7 +14,7 @@ class ExcelIo:
         self, 
         path_or_url: str, 
         sheet_name: str | None = None
-    ) -> list[dict[str, Any]]:
+    ) -> dict[str, Any]:
         return pd.read_excel(
             self.__normalize_path(path_or_url), 
             sheet_name
