@@ -25,8 +25,8 @@ class TelegramChatHistory:
 
         return [json.loads(h) for h in history]
 
-    def store(self, bot_id: str, chat_id: int, message: dict[str, Any]) -> int:
+    def store(self, bot_id: str, chat_id: int, messages: list[dict[str, Any]]) -> int:
         return self.redis_client.rpush(
             f"{self.CACHE_PREFIX}-{bot_id}-{chat_id}-{date.today()}", 
-            json.dumps(message)
+            *[json.dumps(m) for m in messages]
         )
