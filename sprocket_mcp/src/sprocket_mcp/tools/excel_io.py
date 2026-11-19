@@ -18,7 +18,7 @@ class ExcelIo:
         return pd.read_excel(
             self.__normalize_path(path_or_url), 
             sheet_name
-        ).to_dict()
+        ).fillna("").to_dict()
 
     def __normalize_path(self, path_or_url: str) -> str:
         url_parts = urlsplit(path_or_url)
