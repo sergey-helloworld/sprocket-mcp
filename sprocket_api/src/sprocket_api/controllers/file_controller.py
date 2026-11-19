@@ -17,7 +17,8 @@ class FileController:
             )
 
         file_id = str(uuid.uuid4())
-        file_path = Path(f"{self.STORAGE_PATH}/{file_id}{extension}")
+        project_root = Path(__file__).resolve().parents[3]
+        file_path = project_root / self.STORAGE_PATH / f"{file_id}{extension}"
 
         try:
             with file_path.open("wb") as buffer:

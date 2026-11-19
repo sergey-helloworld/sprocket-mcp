@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 from typing import Final, Any
 from urllib.parse import urlsplit
+from pathlib import Path
 
 class ExcelIo:
     STORAGE_PATH: Final[str] = "storage"
@@ -13,16 +14,25 @@ class ExcelIo:
     def read_excel(
         self, 
         path_or_url: str, 
-        sheet_name: str | None = None
+        sheet_name: str | None = None,
+        has_header_row: bool = False,
+        limit: int = 1000,
+        offset: int = 0,
     ) -> dict[str, Any]:
+        offset = range(1, offset + 1) if has_header_row else offset
+
         return pd.read_excel(
             self.__normalize_path(path_or_url), 
-            sheet_name
-        ).fillna("").to_dict()
+            sheet_name,
+            skiprows=offset,
+            nrows=limit,
+            keep_default_na=False
+        ).to_dict()
 
     def __normalize_path(self, path_or_url: str) -> str:
         url_parts = urlsplit(path_or_url)
-        if url_parts.scheme in ['https', 'http'] and url_parts.netloc != '':
+        if url_parts.scheme in ["https", "http"] and url_parts.netloc != "":
             return path_or_url
         
-        return f"{self.STORAGE_PATH}/{path_or_url}"
+        project_root = Path(__file__).resolve().parents[3]
+        return project_root / self.STORAGE_PATH / path_or_url
