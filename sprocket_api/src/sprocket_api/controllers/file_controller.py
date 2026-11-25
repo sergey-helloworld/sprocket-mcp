@@ -2,10 +2,10 @@ from fastapi import UploadFile, HTTPException
 from typing import Final
 from pathlib import Path
 import uuid
+import os
 
 class FileController:
     ALLOWED_EXTENSIONS: Final[list[str]] = [".xlsx", ".xls"]
-    STORAGE_PATH: Final[str] = "storage"
 
     async def upload_file(self, file: UploadFile) -> dict[str, any]:
         extension = Path(file.filename or "").suffix.lower()
@@ -18,7 +18,7 @@ class FileController:
 
         file_id = str(uuid.uuid4())
         project_root = Path(__file__).resolve().parents[3]
-        file_path = project_root / self.STORAGE_PATH / f"{file_id}{extension}"
+        file_path = project_root / os.getenv("STORAGE_PATH", "") / f"{file_id}{extension}"
 
         try:
             with file_path.open("wb") as buffer:

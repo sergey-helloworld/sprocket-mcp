@@ -4,6 +4,7 @@ from fastmcp import FastMCP
 from fastmcp.tools import Tool
 from sprocket_mcp.helpers.redis_helper import RedisHelper
 from sprocket_mcp.tools.telegram_chat_history import TelegramChatHistory
+from sprocket_mcp.tools.vocabulary_randomizer import VocabularyRandomizer
 
 class Configurator:
     def __init__(self, fast_mcp: FastMCP) -> None:
@@ -11,6 +12,7 @@ class Configurator:
         self.excel_io: ExcelIo = ExcelIo()
         self.telegram_io: TelegramIo = TelegramIo()
         self.telegram_chat_history = TelegramChatHistory(RedisHelper.get_redis_client())
+        self.vocabulary_randomizer = VocabularyRandomizer()
 
     def configure(self) -> None:
         self.fast_mcp.add_tool(
@@ -47,5 +49,11 @@ class Configurator:
             Tool.from_function(
                 self.telegram_chat_history.get_by_chat_id,
                 name="telegram_chat_history.get_by_chat_id"
+            )
+        )
+        self.fast_mcp.add_tool(
+            Tool.from_function(
+                self.vocabulary_randomizer.get_random_words,
+                name="vocabulary_randomizer.get_random_words"
             )
         )
