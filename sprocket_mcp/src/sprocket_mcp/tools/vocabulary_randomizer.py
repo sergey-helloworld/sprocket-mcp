@@ -2,6 +2,7 @@ from sprocket_mcp.services.vocabulary_randomizer.vocabulary_randomizer_factory i
     VocabularyRandomizerFactory,
 )
 from typing import Any
+from ..dto.vocabulary_randomizer_params_dto import VocabularyRandomizerParamsDto
 
 class VocabularyRandomizer:
     def get_random_words(
@@ -9,7 +10,7 @@ class VocabularyRandomizer:
         source: str, 
         resource_id: str, 
         count: int, 
-        params: dict[str, Any] = {}
+        params: VocabularyRandomizerParamsDto,
     ) -> list[dict[str, str]]:
         randomizer = VocabularyRandomizerFactory.create_by_source_name(source)
         return randomizer.get_random_words(resource_id, count, params)
