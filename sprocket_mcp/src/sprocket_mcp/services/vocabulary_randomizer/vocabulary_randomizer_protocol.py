@@ -6,6 +6,6 @@ class VocabularyRandomizerProtocol(Protocol):
         self, 
         resource_id: str, 
         count: int, 
-        params: VocabularyRandomizerParamsDto,
+        params: VocabularyRandomizerParamsDto | None = VocabularyRandomizerParamsDto(),
     ) -> list[dict[str, str]]:
         pass

@@ -10,7 +10,7 @@ class ExcelVocabularyRandomizer:
       self, 
       filename: str, 
       count: int, 
-      params: VocabularyRandomizerParamsDto,
+      params: VocabularyRandomizerParamsDto | None = VocabularyRandomizerParamsDto()  
    ) -> list[dict[str, str]]:
       if count < 1:
          return []
@@ -19,7 +19,7 @@ class ExcelVocabularyRandomizer:
       sheet_names = params.excel_sheet_names if params.excel_sheet_names else [0]
       filename = PathHelper.normalize_path(filename)
       count_from = 2 if has_header_row else 1
-      word_positions = self.__get_word_positions(filename, sheet_names)
+      word_positions = self.__get_word_positions(filename, sheet_names, has_header_row)
       random_indexes = []
       words = []
 
@@ -33,7 +33,7 @@ class ExcelVocabularyRandomizer:
          line = pd.read_excel(
             filename,
             sheet_name,
-            skiprows=range(1, position-1) if has_header_row else position-1,
+            skiprows=range(1, position) if has_header_row else position,
             nrows=1,
             keep_default_na=False,
             header=0 if has_header_row else None,
@@ -48,12 +48,13 @@ class ExcelVocabularyRandomizer:
    def __get_word_positions(
       self, 
       filename: str, 
-      sheet_names: list[str | int]
+      sheet_names: list[str | int],
+      has_header_row: bool = False,
    ) -> list[dict[str, str | int]]:
       word_positions = []
       for sheet_name in sheet_names:
          word_count = self.__get_word_count(filename, sheet_name)
-         for i in range(word_count):
+         for i in range(1 if has_header_row else 0, word_count):
             word_positions.append({"position": i, "sheet_name": sheet_name})
       
       return word_positions
