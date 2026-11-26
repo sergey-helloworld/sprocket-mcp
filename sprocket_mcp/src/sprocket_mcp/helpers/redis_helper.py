@@ -1,4 +1,5 @@
 from redis import Redis
+import os
 
 class RedisHelper:
     client: Redis = None
@@ -6,7 +7,11 @@ class RedisHelper:
     @classmethod
     def get_redis_client(cls) -> Redis:
         if cls.client is None:
-            cls.client = Redis(host='host.docker.internal', port=6379, decode_responses=True)
+            cls.client = Redis(
+                host=os.getenv("REDIS_HOST"),
+                port=int(os.getenv("REDIS_PORT")), 
+                decode_responses=True
+            )
 
         return cls.client
 
